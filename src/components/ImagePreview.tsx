@@ -18,13 +18,34 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 
   useEffect(() => {
     if (originalImage && containerRef.current) {
-      // Calculate the container dimensions
-      const containerWidth = containerRef.current.clientWidth;
-      const scale = Math.min(1, containerWidth / originalImage.width);
+      // Get the container dimensions
+      const container = containerRef.current;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
       
-      // Set canvas dimensions based on the container and the image's aspect ratio
-      setCanvasWidth(originalImage.width * scale);
-      setCanvasHeight(originalImage.height * scale);
+      // Calculate the aspect ratio of the image
+      const imageAspectRatio = originalImage.width / originalImage.height;
+      
+      // Determine the dimensions that fit within the container
+      // while maintaining the original aspect ratio
+      let newWidth = originalImage.width;
+      let newHeight = originalImage.height;
+      
+      // Scale down if the image is larger than the container
+      if (newWidth > containerWidth) {
+        newWidth = containerWidth;
+        newHeight = newWidth / imageAspectRatio;
+      }
+      
+      // If after scaling by width, the height is still too large
+      if (newHeight > containerHeight) {
+        newHeight = containerHeight;
+        newWidth = newHeight * imageAspectRatio;
+      }
+      
+      // Set the canvas dimensions
+      setCanvasWidth(newWidth);
+      setCanvasHeight(newHeight);
     }
   }, [originalImage, containerRef]);
 
