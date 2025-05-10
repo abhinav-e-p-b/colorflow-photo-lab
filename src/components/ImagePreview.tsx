@@ -13,9 +13,12 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
   showOriginal 
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const originalCanvasRef = useRef<HTMLCanvasElement>(null);
+  const processedCanvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasWidth, setCanvasWidth] = useState<number>(0);
   const [canvasHeight, setCanvasHeight] = useState<number>(0);
 
+  // Set up the canvas dimensions based on container and image
   useEffect(() => {
     if (originalImage && containerRef.current) {
       // Get the container dimensions
@@ -49,59 +52,60 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     }
   }, [originalImage, containerRef]);
 
+  // Draw images to canvas when canvases, images, or dimensions change
+  useEffect(() => {
+    if (originalImage && originalCanvasRef.current) {
+      const canvas = originalCanvasRef.current;
+      const ctx = canvas.getContext('2d');
+      
+      if (ctx) {
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.drawImage(
+          originalImage, 
+          0, 0, originalImage.width, originalImage.height, 
+          0, 0, canvasWidth, canvasHeight
+        );
+      }
+    }
+    
+    if (processedImage && processedCanvasRef.current) {
+      const canvas = processedCanvasRef.current;
+      const ctx = canvas.getContext('2d');
+      
+      if (ctx) {
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.drawImage(
+          processedImage, 
+          0, 0, processedImage.width, processedImage.height,
+          0, 0, canvasWidth, canvasHeight
+        );
+      }
+    }
+  }, [originalImage, processedImage, canvasWidth, canvasHeight]);
+
   return (
     <div 
       ref={containerRef} 
-      className="image-container bg-editor-darker rounded-lg flex items-center justify-center overflow-hidden animate-fade-in"
+      className="image-container bg-editor-darker rounded-lg flex items-center justify-center overflow-hidden animate-fade-in h-full"
+      style={{ minHeight: '300px' }}
     >
       {originalImage ? (
         <div className="relative" style={{ width: canvasWidth, height: canvasHeight }}>
           {/* Original image canvas */}
           <canvas
+            ref={originalCanvasRef}
             width={canvasWidth}
             height={canvasHeight}
             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${showOriginal ? 'opacity-100' : 'opacity-0'}`}
-            style={{ display: 'block' }}
-          ></canvas>
+          />
           
           {/* Processed image canvas */}
           <canvas
+            ref={processedCanvasRef}
             width={canvasWidth}
             height={canvasHeight}
             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${!showOriginal ? 'opacity-100' : 'opacity-0'}`}
-            style={{ display: 'block' }}
-          ></canvas>
-          
-          {/* Draw the images to the canvases */}
-          {(() => {
-            const canvases = containerRef.current?.querySelectorAll('canvas');
-            if (canvases && canvases.length >= 2) {
-              const originalCanvas = canvases[0];
-              const processedCanvas = canvases[1];
-              
-              const originalCtx = originalCanvas.getContext('2d');
-              const processedCtx = processedCanvas.getContext('2d');
-              
-              if (originalCtx && originalImage) {
-                originalCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-                originalCtx.drawImage(
-                  originalImage, 
-                  0, 0, originalImage.width, originalImage.height, 
-                  0, 0, canvasWidth, canvasHeight
-                );
-              }
-              
-              if (processedCtx && processedImage) {
-                processedCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-                processedCtx.drawImage(
-                  processedImage, 
-                  0, 0, processedImage.width, processedImage.height,
-                  0, 0, canvasWidth, canvasHeight
-                );
-              }
-            }
-            return null;
-          })()}
+          />
         </div>
       ) : (
         <div className="text-gray-400 text-center p-10">
