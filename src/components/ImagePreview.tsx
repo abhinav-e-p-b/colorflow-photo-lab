@@ -56,24 +56,21 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     >
       {originalImage ? (
         <div className="relative" style={{ width: canvasWidth, height: canvasHeight }}>
-          {/* Render either the original or processed image based on the showOriginal prop */}
-          <div className={`absolute inset-0 transition-opacity duration-300 ${showOriginal ? 'opacity-100' : 'opacity-0'}`}>
-            <canvas
-              width={canvasWidth}
-              height={canvasHeight}
-              className="w-full h-full"
-              style={{ display: 'block' }}
-            ></canvas>
-          </div>
+          {/* Original image canvas */}
+          <canvas
+            width={canvasWidth}
+            height={canvasHeight}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${showOriginal ? 'opacity-100' : 'opacity-0'}`}
+            style={{ display: 'block' }}
+          ></canvas>
           
-          <div className={`absolute inset-0 transition-opacity duration-300 ${!showOriginal ? 'opacity-100' : 'opacity-0'}`}>
-            <canvas
-              width={canvasWidth}
-              height={canvasHeight}
-              className="w-full h-full"
-              style={{ display: 'block' }}
-            ></canvas>
-          </div>
+          {/* Processed image canvas */}
+          <canvas
+            width={canvasWidth}
+            height={canvasHeight}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${!showOriginal ? 'opacity-100' : 'opacity-0'}`}
+            style={{ display: 'block' }}
+          ></canvas>
           
           {/* Draw the images to the canvases */}
           {(() => {
@@ -86,6 +83,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
               const processedCtx = processedCanvas.getContext('2d');
               
               if (originalCtx && originalImage) {
+                originalCtx.clearRect(0, 0, canvasWidth, canvasHeight);
                 originalCtx.drawImage(
                   originalImage, 
                   0, 0, originalImage.width, originalImage.height, 
@@ -94,6 +92,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
               }
               
               if (processedCtx && processedImage) {
+                processedCtx.clearRect(0, 0, canvasWidth, canvasHeight);
                 processedCtx.drawImage(
                   processedImage, 
                   0, 0, processedImage.width, processedImage.height,
