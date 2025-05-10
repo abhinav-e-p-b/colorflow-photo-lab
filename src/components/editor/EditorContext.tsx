@@ -1,6 +1,5 @@
-
 import React, { createContext, useContext, useState, useRef, ReactNode } from 'react';
-import { loadImageToCanvas, cloneCanvas } from '../../utils/imageProcessor';
+import { loadImageToCanvas, cloneCanvas, shareCanvasImage, downloadCanvasImage } from '../../utils/imageProcessor';
 import { LutFile, applyLutToCanvas } from '../../utils/lutProcessor';
 import { useToast } from "../../hooks/use-toast";
 
@@ -134,23 +133,21 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Handle sharing
   const handleShare = () => {
     if (processedCanvasRef.current) {
-      import('../utils/imageProcessor').then(({ shareCanvasImage }) => {
-        shareCanvasImage(processedCanvasRef.current)
-          .then(() => {
-            toast({
-              title: "Image Shared",
-              description: "Your edited image has been shared successfully",
-            });
-          })
-          .catch((error) => {
-            console.error("Error sharing image:", error);
-            toast({
-              title: "Share Failed",
-              description: "Could not share the image. Try saving instead.",
-              variant: "destructive",
-            });
+      shareCanvasImage(processedCanvasRef.current)
+        .then(() => {
+          toast({
+            title: "Image Shared",
+            description: "Your edited image has been shared successfully",
           });
-      });
+        })
+        .catch((error) => {
+          console.error("Error sharing image:", error);
+          toast({
+            title: "Share Failed",
+            description: "Could not share the image. Try saving instead.",
+            variant: "destructive",
+          });
+        });
     } else {
       toast({
         title: "No Image",
@@ -163,12 +160,10 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Handle save
   const handleSave = () => {
     if (processedCanvasRef.current) {
-      import('../utils/imageProcessor').then(({ downloadCanvasImage }) => {
-        downloadCanvasImage(processedCanvasRef.current, "lutify-edited");
-        toast({
-          title: "Image Saved",
-          description: "Your edited image has been saved to your device",
-        });
+      downloadCanvasImage(processedCanvasRef.current, "lutify-edited");
+      toast({
+        title: "Image Saved",
+        description: "Your edited image has been saved to your device",
       });
     } else {
       toast({
