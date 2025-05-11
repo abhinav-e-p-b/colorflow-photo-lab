@@ -13,26 +13,27 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
   showOriginal 
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const originalCanvasRef = useRef<HTMLCanvasElement>(null);
-  const processedCanvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasWidth, setCanvasWidth] = useState<number>(0);
   const [canvasHeight, setCanvasHeight] = useState<number>(0);
 
   // Set up the canvas dimensions based on container and image
   useEffect(() => {
-    if (originalImage && containerRef.current) {
+    const sourceImage = showOriginal ? originalImage : processedImage;
+    
+    if (sourceImage && containerRef.current) {
       // Get the container dimensions
       const container = containerRef.current;
       const containerWidth = container.clientWidth;
       const containerHeight = container.clientHeight;
       
       // Calculate the aspect ratio of the image
-      const imageAspectRatio = originalImage.width / originalImage.height;
+      const imageAspectRatio = sourceImage.width / sourceImage.height;
       
       // Determine the dimensions that fit within the container
       // while maintaining the original aspect ratio
-      let newWidth = originalImage.width;
-      let newHeight = originalImage.height;
+      let newWidth = sourceImage.width;
+      let newHeight = sourceImage.height;
       
       // Scale down if the image is larger than the container
       if (newWidth > containerWidth) {
@@ -50,61 +51,40 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
       setCanvasWidth(newWidth);
       setCanvasHeight(newHeight);
     }
-  }, [originalImage, containerRef]);
+  }, [originalImage, processedImage, showOriginal, containerRef]);
 
-  // Draw images to canvas when canvases, images, or dimensions change
+  // Draw image to canvas when it changes
   useEffect(() => {
-    if (originalImage && originalCanvasRef.current) {
-      const canvas = originalCanvasRef.current;
-      const ctx = canvas.getContext('2d');
-      
-      if (ctx) {
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx.drawImage(
-          originalImage, 
-          0, 0, originalImage.width, originalImage.height, 
-          0, 0, canvasWidth, canvasHeight
-        );
-      }
-    }
+    const sourceImage = showOriginal ? originalImage : processedImage;
     
-    if (processedImage && processedCanvasRef.current) {
-      const canvas = processedCanvasRef.current;
+    if (sourceImage && canvasRef.current) {
+      const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
       
       if (ctx) {
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         ctx.drawImage(
-          processedImage, 
-          0, 0, processedImage.width, processedImage.height,
+          sourceImage, 
+          0, 0, sourceImage.width, sourceImage.height, 
           0, 0, canvasWidth, canvasHeight
         );
       }
     }
-  }, [originalImage, processedImage, canvasWidth, canvasHeight]);
+  }, [originalImage, processedImage, showOriginal, canvasWidth, canvasHeight]);
 
   return (
     <div 
       ref={containerRef} 
       className="image-container bg-editor-darker rounded-lg flex items-center justify-center overflow-hidden animate-fade-in h-full"
-      style={{ minHeight: '300px' }}
+      style={{ minHeight: '200px' }}
     >
       {originalImage ? (
         <div className="relative" style={{ width: canvasWidth, height: canvasHeight }}>
-          {/* Original image canvas */}
           <canvas
-            ref={originalCanvasRef}
+            ref={canvasRef}
             width={canvasWidth}
             height={canvasHeight}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${showOriginal ? 'opacity-100' : 'opacity-0'}`}
-          />
-          
-          {/* Processed image canvas */}
-          <canvas
-            ref={processedCanvasRef}
-            width={canvasWidth}
-            height={canvasHeight}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${!showOriginal ? 'opacity-100' : 'opacity-0'}`}
+            className="w-full h-full"
           />
         </div>
       ) : (

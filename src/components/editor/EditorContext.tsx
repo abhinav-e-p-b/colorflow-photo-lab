@@ -12,6 +12,7 @@ interface EditorContextType {
   showingOriginal: boolean;
   originalCanvasRef: React.RefObject<HTMLCanvasElement>;
   processedCanvasRef: React.RefObject<HTMLCanvasElement>;
+  isFullscreen: boolean;
   
   // Actions
   setSelectedImage: (file: File | null) => void;
@@ -21,6 +22,7 @@ interface EditorContextType {
   handleBeforeAfterToggle: () => void;
   handleShare: () => void;
   handleSave: () => void;
+  toggleFullscreen: () => void;
 }
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
@@ -30,6 +32,7 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [selectedLut, setSelectedLut] = useState<LutFile | null>(null);
   const [intensity, setIntensity] = useState<number>(1);
   const [showingOriginal, setShowingOriginal] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   
   const originalCanvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
   const processedCanvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
@@ -130,6 +133,21 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setShowingOriginal(!showingOriginal);
   };
 
+  // Toggle fullscreen mode
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      const element = document.documentElement;
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+    setIsFullscreen(!isFullscreen);
+  };
+
   // Handle sharing
   const handleShare = () => {
     if (processedCanvasRef.current) {
@@ -174,6 +192,19 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
+  // Effect to listen for fullscreen changes from browser
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const value = {
     selectedImage,
     selectedLut,
@@ -181,6 +212,7 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     showingOriginal,
     originalCanvasRef,
     processedCanvasRef,
+    isFullscreen,
     setSelectedImage,
     handleImageSelected,
     handleLutSelected,
@@ -188,6 +220,7 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     handleBeforeAfterToggle,
     handleShare,
     handleSave,
+    toggleFullscreen,
   };
 
   return (
