@@ -55,6 +55,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 
   // Draw image to canvas when it changes
   useEffect(() => {
+    // Determine which image to display based on showOriginal prop
     const sourceImage = showOriginal ? originalImage : processedImage;
     
     if (sourceImage && canvasRef.current) {
