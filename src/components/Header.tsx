@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut } from 'lucide-react';
+import { LogOut, Waves } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface HeaderProps {
@@ -11,6 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
   const { logout, user } = useAuth();
+  const [isWaving, setIsWaving] = React.useState(false);
   
   // Function to handle clicks on social media icons
   const handleSocialShare = (platform: string, e: React.MouseEvent) => {
@@ -21,6 +22,22 @@ const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
     onShare();
   };
 
+  const handleWaveClick = () => {
+    if (!isWaving) {
+      setIsWaving(true);
+      // Reset after animation duration
+      setTimeout(() => {
+        setIsWaving(false);
+      }, 2000);
+    }
+  };
+
+  // Expose isWaving state to parent components
+  React.useEffect(() => {
+    // Update a global variable or dispatch an event that other components can listen to
+    window.dispatchEvent(new CustomEvent('wave-animation', { detail: { isAnimating: isWaving } }));
+  }, [isWaving]);
+
   return (
     <header className="flex items-center justify-between px-4 py-4 bg-editor-darker">
       <div className="flex items-center">
@@ -29,6 +46,15 @@ const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
       </div>
       
       <div className="flex items-center gap-4">
+        <button 
+          className="wave-button flex items-center gap-2" 
+          onClick={handleWaveClick}
+          disabled={isWaving}
+        >
+          <Waves size={16} />
+          <span>Wave</span>
+        </button>
+
         <div className="tooltip-container">
           <div className="button-content" onClick={onShare}>
             <span className="text">Share</span>

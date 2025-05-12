@@ -1,13 +1,32 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const WaveBackground: React.FC = () => {
+interface WaveBackgroundProps {
+  isAnimating?: boolean;
+}
+
+const WaveBackground: React.FC<WaveBackgroundProps> = ({ isAnimating = false }) => {
+  const [animationClass, setAnimationClass] = useState('');
+  
+  useEffect(() => {
+    if (isAnimating) {
+      setAnimationClass('animate-wave');
+      
+      // Reset animation after 2 seconds
+      const timeout = setTimeout(() => {
+        setAnimationClass('');
+      }, 2000);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [isAnimating]);
+
   return (
-    <div className="absolute top-0 left-0 w-full z-0 pointer-events-none overflow-hidden">
+    <div className="absolute top-1/3 left-0 w-full z-0 pointer-events-none overflow-hidden">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         viewBox="0 0 1440 320"
-        className="w-full"
+        className={`w-full transition-transform duration-2000 ${animationClass}`}
         preserveAspectRatio="none"
       >
         <path 
