@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,22 +35,22 @@
     @apply bg-editor-dark text-foreground antialiased;
   }
 
-  /* Wave animation */
+  /* Wave animation - updated for left to right flow */
   @keyframes wave {
     0% {
-      transform: translateY(0) scaleY(1);
+      transform: translateX(0);
     }
     25% {
-      transform: translateY(-15px) scaleY(1.05);
+      transform: translateX(15px);
     }
     50% {
-      transform: translateY(10px) scaleY(0.95);
+      transform: translateX(-10px);
     }
     75% {
-      transform: translateY(-5px) scaleY(1.02);
+      transform: translateX(5px);
     }
     100% {
-      transform: translateY(0) scaleY(1);
+      transform: translateX(0);
     }
   }
 
