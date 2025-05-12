@@ -25,13 +25,21 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   
   // Apply theme changes to the document
   useEffect(() => {
+    // Update document classes - this is the key part for theme toggle
     document.documentElement.classList.remove('dark', 'light');
     document.documentElement.classList.add(theme);
     localStorage.setItem('theme', theme);
+
+    // For debugging
+    console.log('Theme changed to:', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+    setTheme(prevTheme => {
+      const newTheme = prevTheme === 'dark' ? 'light' : 'dark';
+      console.log('Toggling theme from', prevTheme, 'to', newTheme);
+      return newTheme;
+    });
   };
 
   return (
