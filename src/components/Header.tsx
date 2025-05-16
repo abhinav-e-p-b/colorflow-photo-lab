@@ -40,10 +40,10 @@ const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
   }, [isWaving]);
 
   return (
-    <header className="flex items-center justify-between px-4 py-4 bg-editor-darker">
+    <header className="flex items-center justify-between px-4 py-4 bg-editor-darker dark:bg-editor-darker light:bg-white transition-colors duration-300">
       <div className="flex items-center">
-        <h1 className="text-xl font-bold text-white">LUTify</h1>
-        {user && <span className="ml-4 text-white text-sm opacity-75">Welcome, {user.username}</span>}
+        <h1 className="text-xl font-bold text-white dark:text-white light:text-slate-800">LUTify</h1>
+        {user && <span className="ml-4 text-white text-sm opacity-75 dark:text-white light:text-slate-600">Welcome, {user.username}</span>}
       </div>
       
       <div className="flex items-center gap-3">
