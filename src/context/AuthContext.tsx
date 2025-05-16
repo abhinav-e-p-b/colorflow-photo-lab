@@ -11,6 +11,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<boolean>;
+  signup: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -93,6 +94,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const signup = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      });
+      
+      if (error) {
+        console.error('Signup error:', error.message);
+        toast.error(error.message);
+        return false;
+      }
+      
+      if (data.user) {
+        toast.success("Signup successful! Please check your email for verification.");
+        return true;
+      }
+      
+      return false;
+    } catch (error: any) {
+      console.error('Signup error:', error.message);
+      toast.error(error.message || 'Signup failed');
+      return false;
+    }
+  };
+
   const logout = async (): Promise<void> => {
     try {
       await supabase.auth.signOut();
@@ -106,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     login,
+    signup,
     logout,
     isAuthenticated: !!user
   };
