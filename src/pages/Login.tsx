@@ -28,7 +28,7 @@ const Login = () => {
 
   const handleForgotPassword = (e: React.MouseEvent) => {
     e.preventDefault();
-    toast.info("Password recovery is not implemented yet.");
+    navigate('/reset-password');
   };
 
   return (
