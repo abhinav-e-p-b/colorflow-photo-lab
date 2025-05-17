@@ -10,44 +10,22 @@ const ThemeToggle: React.FC = () => {
   const isChecked = theme === 'dark';
   
   return (
-    <div className="flex items-center gap-2 transition-colors">
-      <div
-        className="w-36 aspect-video rounded-xl bg-[#ebe6ef] dark:bg-[#3a3347] border-4 border-[#121331]"
-      >
-        <div className="flex h-full w-full px-2 items-center gap-x-2">
-          <div
-            className="w-4 h-4 flex-shrink-0 rounded-full border-4 border-[#121331]"
-          ></div>
-          <label
-            htmlFor="theme-switch"
-            className="w-full h-6 border-4 border-[#121331] rounded cursor-pointer"
-          >
-            <input 
-              type="checkbox" 
-              id="theme-switch" 
-              className="hidden" 
-              checked={isChecked}
-              onChange={toggleTheme}
-            />
-            <div className={`w-full h-full ${isChecked ? 'bg-[#3a4999]' : 'bg-[#f24c00]'} relative ${isChecked ? 'scale-x-[-1]' : ''}`}>
-              <div
-                className="w-0 h-0 z-20 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[14px] border-t-[#121331] relative"
-              >
-                <div
-                  className={`w-0 h-0 absolute border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[10px] ${isChecked ? 'border-t-[#2d3b87]' : 'border-t-[#e44901]'} -top-[14px] -left-[14px]`}
-                ></div>
-              </div>
-              <div
-                className={`w-[18px] h-5 z-10 absolute top-[7px] left-0 ${isChecked ? 'bg-[#3a4999]' : 'bg-[#f24c00]'} border-r-2 border-b-4 border-[#121331] transform skew-y-[39deg]`}
-              ></div>
-              <div
-                className={`w-[18px] h-5 z-10 absolute top-[7px] left-[18px] ${isChecked ? 'bg-[#2d3b87]' : 'bg-[#c44002]'} border-r-4 border-l-2 border-b-4 border-[#121331] transform skew-y-[-39deg]`}
-              ></div>
-            </div>
-          </label>
-          <div className="w-4 h-1 flex-shrink-0 bg-[#121331] rounded-full"></div>
-        </div>
-      </div>
+    <div className="flex items-center transition-colors">
+      <label className="switch">
+        <input 
+          type="checkbox" 
+          checked={isChecked}
+          onChange={toggleTheme}
+        />
+        <span className="slider">
+          <span className="star star_1"></span>
+          <span className="star star_2"></span>
+          <span className="star star_3"></span>
+          <svg className="cloud" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+            <path fill="white" d="M30.9 22.5c0-0.2 0.1-0.3 0.1-0.5 0-3.3-2.7-6-6-6 -0.6 0-1.1 0.1-1.7 0.3 -1.5-2.9-4.6-4.8-8-4.8 -5 0-9 4-9 9 0 0.4 0 0.9 0.1 1.3C3.9 23 2 25.9 2 29.5c0 2.5 2 4.5 4.5 4.5h21c4.4 0 8-3.6 8-8C35.5 24.1 33.5 22.5 30.9 22.5z"/>
+          </svg>
+        </span>
+      </label>
       <span className="sr-only">
         <Label htmlFor="theme-switch">Toggle theme</Label>
       </span>

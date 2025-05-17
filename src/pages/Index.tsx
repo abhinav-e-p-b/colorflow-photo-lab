@@ -9,7 +9,7 @@ const Index = () => {
   
   return (
     <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-editor-dark text-white' : 'bg-white text-slate-900'}`}>
-      <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+      <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
         <ThemeToggle />
       </div>
       <Editor />
