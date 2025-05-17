@@ -9,8 +9,8 @@ const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   
   return (
-    <div className="flex items-center gap-2 bg-background/60 backdrop-blur-sm p-2 rounded-full shadow-md">
-      <Sun className="h-4 w-4 text-amber-500" />
+    <div className="flex items-center gap-2 bg-background/60 backdrop-blur-sm p-2 rounded-full shadow-md transition-colors">
+      <Sun className={`h-4 w-4 ${theme === 'light' ? 'text-amber-500' : 'text-muted-foreground'}`} />
       <Switch
         checked={theme === "dark"}
         onCheckedChange={toggleTheme}
@@ -18,7 +18,7 @@ const ThemeToggle: React.FC = () => {
         aria-label="Toggle theme"
         className="data-[state=checked]:bg-slate-900 data-[state=unchecked]:bg-blue-100"
       />
-      <Moon className="h-4 w-4 text-indigo-700" />
+      <Moon className={`h-4 w-4 ${theme === 'dark' ? 'text-indigo-700' : 'text-muted-foreground'}`} />
       <span className="sr-only">
         <Label htmlFor="theme-toggle">Toggle theme</Label>
       </span>

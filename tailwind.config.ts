@@ -31,6 +31,8 @@ export default {
 					accent: '#ff6b6b',
 					muted: '#2a2a2a',
 					highlight: '#ff6b6b',
+					light: '#f8f9fa',
+					lightMuted: '#e9ecef',
 				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
