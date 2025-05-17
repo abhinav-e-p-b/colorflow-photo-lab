@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Waves } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   onShare: () => void;
@@ -47,8 +45,6 @@ const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
       </div>
       
       <div className="flex items-center gap-3">
-        <ThemeToggle />
-        
         <button 
           className="wave-button flex items-center gap-2" 
           onClick={handleWaveClick}
