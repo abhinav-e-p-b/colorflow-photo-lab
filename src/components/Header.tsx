@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Waves } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   onShare: () => void;
@@ -111,10 +113,14 @@ const Header: React.FC<HeaderProps> = ({ onShare, onSave }) => {
           </div>
         </div>
         
-        <Button variant="ghost" size="sm" onClick={logout} className="flex items-center gap-1 text-white">
-          <LogOut size={16} className="mr-1" />
-          Logout
-        </Button>
+        <div className="flex flex-col items-end gap-2">
+          <Button variant="ghost" size="sm" onClick={logout} className="flex items-center gap-1 text-white">
+            <LogOut size={16} className="mr-1" />
+            Logout
+          </Button>
+          
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
