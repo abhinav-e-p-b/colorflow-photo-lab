@@ -16,6 +16,7 @@ const ThemeToggle: React.FC = () => {
           type="checkbox" 
           checked={isChecked}
           onChange={toggleTheme}
+          aria-label="Toggle theme"
         />
         <span className="slider">
           <span className="star star_1"></span>

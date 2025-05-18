@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -611,7 +610,7 @@
   }
 
   .light .slider {
-    background-color: #a9927d; /* Old money brown color for light mode */
+    background-color: theme('colors.editor.oldMoneyBrown'); /* Old money brown color for light mode */
   }
 
   .slider:before {
@@ -632,7 +631,7 @@
   }
 
   .light .switch input:checked + .slider {
-    background-color: #0EA5E9; /* Sea blue color for light mode */
+    background-color: theme('colors.editor.seaBlue'); /* Sea blue color for light mode */
   }
 
   .switch input:checked + .slider:before {
