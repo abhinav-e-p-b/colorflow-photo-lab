@@ -18,7 +18,7 @@ const ThemeToggle: React.FC = () => {
           onChange={toggleTheme}
           aria-label="Toggle theme"
         />
-        <span className="slider">
+        <span className={`slider ${theme === 'light' ? 'light-mode' : ''}`}>
           <span className="star star_1"></span>
           <span className="star star_2"></span>
           <span className="star star_3"></span>

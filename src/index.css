@@ -609,8 +609,8 @@
     overflow: hidden;
   }
 
-  .light .slider {
-    background-color: theme('colors.editor.oldMoneyBrown'); /* Old money brown color for light mode */
+  .light-mode {
+    background-color: #a9927d !important; /* Old money brown color for light mode */
   }
 
   .slider:before {
@@ -630,8 +630,9 @@
     background-color: #00a6ff;
   }
 
-  .light .switch input:checked + .slider {
-    background-color: theme('colors.editor.seaBlue'); /* Sea blue color for light mode */
+  .light .switch input:checked + .slider,
+  .light-mode.switch input:checked + .slider {
+    background-color: #0EA5E9 !important; /* Sea blue color for light mode */
   }
 
   .switch input:checked + .slider:before {
