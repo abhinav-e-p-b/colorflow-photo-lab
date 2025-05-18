@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -609,6 +610,10 @@
     overflow: hidden;
   }
 
+  .light .slider {
+    background-color: #a9927d; /* Old money brown color for light mode */
+  }
+
   .slider:before {
     position: absolute;
     content: "";
@@ -624,6 +629,10 @@
 
   .switch input:checked + .slider {
     background-color: #00a6ff;
+  }
+
+  .light .switch input:checked + .slider {
+    background-color: #0EA5E9; /* Sea blue color for light mode */
   }
 
   .switch input:checked + .slider:before {

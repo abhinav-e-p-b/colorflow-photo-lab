@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -33,6 +32,8 @@ export default {
 					highlight: '#ff6b6b',
 					light: '#f8f9fa',
 					lightMuted: '#e9ecef',
+					seaBlue: '#0EA5E9',
+					oldMoneyBrown: '#a9927d',
 				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
